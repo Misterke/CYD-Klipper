@@ -109,6 +109,14 @@ void wifi_init_inner(){
     WiFi.disconnect();
     lv_obj_clean(lv_scr_act());
 
+#   ifdef WIFI_SSID
+    if (!global_config.wifi_configured) {
+        strncpy(global_config.wifi_SSID, WIFI_SSID, sizeof(global_config.wifi_SSID));
+        strncpy(global_config.wifi_password, WIFI_PASSWORD, sizeof(global_config.wifi_password));
+        global_config.wifi_configured = true;
+    }
+#   endif
+
     if (global_config.wifi_configured){
         if (global_config.wifi_password[0] == '\0')
         {
