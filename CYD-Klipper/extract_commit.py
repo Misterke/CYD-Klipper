@@ -1,4 +1,5 @@
 import subprocess
+import json
 
 def extract_commit() -> str:
     git_describe_output = subprocess.run(["git", "describe", "--tags"], stdout=subprocess.PIPE, text=True, check=True).stdout.strip()
@@ -23,6 +24,15 @@ flags = [flag]
 
 if ('(' in version):
     flags.append(dev_flag)
+
+try:
+    f = open ('wifi.secret', "r")
+    data = json.loads(f.read())
+    flags.append("-D WIFI_SSID=\\\"" + data['ssid'] + "\\\"")
+    flags.append("-D WIFI_PASSWORD=\\\"" + data['password'] + "\\\"")
+    f.close()
+except:
+    pass
 
 Import("env")
 
