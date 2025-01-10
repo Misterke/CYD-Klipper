@@ -95,7 +95,7 @@ static void update_printer_control_button_text(lv_event_t * e)
     int config_index = (int)lv_event_get_user_data(e);
     PrinterDataMinimal* printer = get_printer_data_minimal(config_index);
 
-    if (printer->power_devices > 0 && (config_index == get_current_printer_index() || printer->state == PrinterState::PrinterStateOffline))
+    if ((printer->power_devices > 0) && (config_index == get_current_printer_index()))
     {
         lv_label_set_text(label, "Power");
     }
@@ -127,7 +127,7 @@ static void btn_enable_control(lv_event_t * e)
     int config_index = (int)lv_event_get_user_data(e);
     PrinterDataMinimal* printer = get_printer_data_minimal(config_index);
 
-    if ((config_index == get_current_printer_index() || printer->state == PrinterState::PrinterStateOffline) && printer->power_devices <= 0)
+    if ((config_index == get_current_printer_index()) && (printer->power_devices <= 0))
     {
         // Disable
         lv_obj_add_state(btn, LV_STATE_DISABLED);
@@ -182,7 +182,7 @@ static void btn_printer_activate(lv_event_t * e)
     PrinterDataMinimal* printer = get_printer_data_minimal(config_index);
     BasePrinter* printer_full = get_printer(config_index);
 
-    if (printer->power_devices > 0 && (config_index == get_current_printer_index() || printer->state == PrinterState::PrinterStateOffline))
+    if ((printer->power_devices > 0) && (config_index == get_current_printer_index()))
     {
         macros_draw_power_fullscreen(printer_full);
         return;
